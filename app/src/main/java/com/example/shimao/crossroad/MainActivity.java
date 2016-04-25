@@ -170,20 +170,16 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putInt("road",1);
                     bundle.putInt("location", cur_on_road1);
-                    if (cur_on_road1!=5){
-                        int temp = stat[1][cur_on_road1+1];
-                        stat[1][cur_on_road1+1] = stat[1][cur_on_road1];
-                        stat[1][cur_on_road1] = temp;
-                    }else {
+                    Message m = new Message();
+                    m.setData(bundle);
+                    mhandler.sendMessage(m);
+                    cur_on_road1++;
+                    if (cur_on_road1 == 5){
                         cur_on_road1 = 0;
                         int temp = stat[1][0];
                         stat[1][0] = stat[1][5];
                         stat[1][5] = temp;
                     }
-                    Message m = new Message();
-                    m.setData(bundle);
-                    mhandler.sendMessage(m);
-                    cur_on_road1++;
                 }
             }catch (Exception e){
                 e.printStackTrace();

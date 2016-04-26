@@ -13,12 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.logging.LogRecord;
-
 public class MainActivity extends AppCompatActivity {
 
-    int cur_on_road1,cur_on_road2,cur_on_road4,cur_on_road6 = 0;  /*current location on road */
+    int cur_on_road1,cur_on_road2,cur_on_road4,cur_on_road6 = 0;  /* current car location on road */
+    /* current man location */
+    int cur_location_i = 7;
+    int cur_location_j = 0;
     TextView time;
+    Button leftB, upB, rightB;
     Button[][] buttons = new Button[8][6];
     int[][] id = {
             {R.id.button00,R.id.button01,R.id.button02,R.id.button03,R.id.button04,R.id.button05},
@@ -31,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
             {R.id.button70,R.id.button71,R.id.button72,R.id.button73,R.id.button74,R.id.button75}
     };
     int[][] stat = {
+            /*
+            0 -- safe area
+            2 -- car position
+            1 -- still safe area on the road
+            3 -- man location
+             */
             {0,0,0,0,0,0},
             {2,1,1,1,1,1},
             {2,1,1,1,1,1},
@@ -38,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             {2,1,1,1,1,1},
             {0,0,0,0,0,0},
             {2,1,1,1,1,1},
-            {0,0,0,0,0,0}
+            {3,0,0,0,0,0}
     };
 
     Thread roadOne,roadTwo,roadFour,roadSix;
@@ -49,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        leftB = (Button)findViewById(R.id.left);
+        leftB.setOnClickListener(leftListener);
+        upB = (Button)findViewById(R.id.up);
+        upB.setOnClickListener(upListener);
+        rightB = (Button)findViewById(R.id.right);
+        rightB.setOnClickListener(rightListener);
 
         roadOne = new roadOne();
         roadTwo = new roadTwo();
@@ -106,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
        }
     };
 
+
+    /* update the view */
     private void setMap(){
 
         for (int i = 0; i<8; i++){
@@ -114,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
                     buttons[i][j].setBackgroundColor(Color.RED);
                 }else if (stat[i][j] == 1){
                     buttons[i][j].setBackgroundColor(Color.GRAY);
+                }else if (stat[i][j] == 3){
+                    buttons[i][j].setBackgroundColor(Color.BLACK);
+                }else if (stat[i][j] == 0){
+                    buttons[i][j].setBackgroundColor(Color.GREEN);
                 }
             }
         }
@@ -160,13 +181,67 @@ public class MainActivity extends AppCompatActivity {
         timer.cancel();
     }
 
+    public View.OnClickListener leftListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (cur_location_j!=0){
+                int temp = stat[cur_location_i][cur_location_j-1];
+                stat[cur_location_i][cur_location_j-1] = stat[cur_location_i][cur_location_j];
+                stat[cur_location_i][cur_location_j] = temp;
+                setMap();
+                cur_location_j = cur_location_j-1;
+            }
+        }
+    };
+
+    public View.OnClickListener upListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (cur_location_i!=0){
+                if (cur_location_i == 3 || cur_location_i == 5 || cur_location_i == 7) {
+                    /* if move to the road */
+                    stat[cur_location_i - 1][cur_location_j] = 3;
+                    stat[cur_location_i][cur_location_j] = 0;
+                    setMap();
+                    cur_location_i = cur_location_i - 1;
+                }else if(cur_location_i == 1 || cur_location_i == 4 || cur_location_i == 6){
+                    /*move to the safe area */
+                    stat[cur_location_i-1][cur_location_j] = 3;
+                    stat[cur_location_i][cur_location_j] = 1;
+                    setMap();
+                    cur_location_i = cur_location_i-1;
+                }else{
+                    /* move to still the road */
+                    int temp = stat[cur_location_i-1][cur_location_j];
+                    stat[cur_location_i-1][cur_location_j] = stat[cur_location_i][cur_location_j];
+                    stat[cur_location_i][cur_location_j] = temp;
+                    setMap();
+                    cur_location_i = cur_location_i-1;
+                }
+            }
+        }
+    };
+
+    public View.OnClickListener rightListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (cur_location_j!=5){
+                int temp = stat[cur_location_i][cur_location_j+1];
+                stat[cur_location_i][cur_location_j+1] = stat[cur_location_i][cur_location_j];
+                stat[cur_location_i][cur_location_j] = temp;
+                setMap();
+                cur_location_j = cur_location_j+1;
+            }
+        }
+    };
+
     class roadOne extends Thread{
         @Override
         public void run() {
             super.run();
             try {
                 for (int i = 0; i<30; i++){
-                    Thread.sleep(1000);
+                    Thread.sleep(1000);                       /* 1s a move */
                     Bundle bundle = new Bundle();
                     bundle.putInt("road",1);
                     bundle.putInt("location", cur_on_road1);
@@ -194,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             super.run();
             try {
                 for (int i = 0; i<30; i++){
-                    Thread.sleep(3000);
+                    Thread.sleep(3000);                      /* 3s a move */
                     Bundle bundle = new Bundle();
                     bundle.putInt("road",2);
                     bundle.putInt("location",cur_on_road2);
@@ -221,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
             super.run();
             try {
                 for (int i = 0; i<30; i++){
-                    Thread.sleep(4000);
+                    Thread.sleep(4000);                     /* 4s a move */
                     Bundle bundle = new Bundle();
                     bundle.putInt("road",4);
                     bundle.putInt("location",cur_on_road4);
@@ -248,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
             super.run();
             try {
                 for (int i = 0; i<30; i++){
-                    Thread.sleep(2000);
+                    Thread.sleep(2000);                          /* 2s a move */
                     Bundle bundle = new Bundle();
                     bundle.putInt("road",6);
                     bundle.putInt("location",cur_on_road6);

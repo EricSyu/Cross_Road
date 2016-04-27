@@ -1,5 +1,7 @@
 package com.example.shimao.crossroad;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -124,7 +126,27 @@ public class MainActivity extends AppCompatActivity {
 
     /* update the view */
     private void setMap(){
-
+        if (cur_location_i == 1){
+           if (cur_location_j == cur_on_road1){
+               stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
+               collisionDialog(1);
+           }
+        }else if (cur_location_i == 2){
+            if (cur_location_j == cur_on_road2){
+                stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
+                collisionDialog(2);
+            }
+        }else if (cur_location_i == 4){
+            if (cur_location_j == cur_on_road4){
+                stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
+                collisionDialog(4);
+            }
+        }else if (cur_location_i == 6){
+            if (cur_location_j == cur_on_road6){
+                stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
+                collisionDialog(6);
+            }
+        }
         for (int i = 0; i<8; i++){
             for (int j = 0; j<6; j++){
                 if (stat[i][j] == 2){
@@ -135,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
                     buttons[i][j].setBackgroundColor(Color.BLACK);
                 }else if (stat[i][j] == 0){
                     buttons[i][j].setBackgroundColor(Color.GREEN);
+                }else if (stat[i][j] == 4){
+                    buttons[i][j].setBackgroundColor(Color.BLUE);
                 }
             }
         }
@@ -155,8 +179,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.highscore) {
             return true;
+        }else if (id == R.id.leave){
+            finish();
+            return false;
         }
 
         return super.onOptionsItemSelected(item);
@@ -342,5 +369,24 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void collisionDialog(int road){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.collision)
+                .setMessage("發生車禍於第"+road+"路")
+                .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton(R.string.leave, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
     }
 }

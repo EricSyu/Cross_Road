@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">CrossRoad</string>
     <string name="action_settings">Settings</string>
+
+    <string name="collision">撞車啦</string>
+    <string name="alert_message">車禍發生於第</string>
+
+    <string name="restart">重新開始</string>
+    <string name="leave">離開</string>
 </resources>

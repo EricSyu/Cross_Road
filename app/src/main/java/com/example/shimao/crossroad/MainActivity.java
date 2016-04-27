@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     int cur_location_i = 7;
     int cur_location_j = 0;
     /* accident happen boolean */
-    int gameStat = 1;   /* 1-game playing 2-collision 3-pause*/
+    int gameStat = 1;   /* 1-game playing 2-collision 3-pause 4-restart*/
     TextView time;
     Button leftB, upB, rightB, stopB;
     Button[][] buttons = new Button[8][6];
@@ -44,6 +44,16 @@ public class MainActivity extends AppCompatActivity {
             1 -- still safe area on the road
             3 -- man location
              */
+            {0,0,0,0,0,0},
+            {2,1,1,1,1,1},
+            {2,1,1,1,1,1},
+            {0,0,0,0,0,0},
+            {2,1,1,1,1,1},
+            {0,0,0,0,0,0},
+            {2,1,1,1,1,1},
+            {3,0,0,0,0,0}
+    };
+    int [][] initStat = {
             {0,0,0,0,0,0},
             {2,1,1,1,1,1},
             {2,1,1,1,1,1},
@@ -327,6 +337,9 @@ public class MainActivity extends AppCompatActivity {
                     if (gameStat == 3){
 
                     }
+                    if (gameStat == 4){
+                        break;
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -358,6 +371,9 @@ public class MainActivity extends AppCompatActivity {
                     if (gameStat == 3){
 
                     }
+                    if (gameStat == 4){
+                        break;
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -387,6 +403,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (gameStat == 3){
 
+                    }
+                    if (gameStat == 4){
+                        break;
                     }
                 }
             }catch (Exception e){
@@ -418,6 +437,9 @@ public class MainActivity extends AppCompatActivity {
                     if (gameStat == 3){
 
                     }
+                    if (gameStat == 4){
+                        break;
+                    }
                 }
 
             }catch (Exception e){
@@ -433,7 +455,24 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        gameStat = 4;
+                        stat = initStat.clone();
+                        cur_on_road1 = 0;
+                        cur_on_road2 = 0;
+                        cur_on_road4 = 0;
+                        cur_on_road6 = 0;
+                        cur_location_i = 7;
+                        cur_location_j = 0;
+                        setMap();
+                        gameStat = 1;
+                        roadOne = new roadOne();
+                        roadOne.start();
+                        roadTwo = new roadTwo();
+                        roadTwo.start();
+                        roadFour = new roadFour();
+                        roadFour.start();
+                        roadSix = new roadSix();
+                        roadSix.start();
                     }
                 })
                 .setNegativeButton(R.string.leave, new DialogInterface.OnClickListener() {

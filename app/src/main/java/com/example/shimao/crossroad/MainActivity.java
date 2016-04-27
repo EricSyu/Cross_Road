@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
     /* current man location */
     int cur_location_i = 7;
     int cur_location_j = 0;
+    /* accident happen boolean */
+    int gameStat = 1;   /* 1-game playing 2-collision 3-pause*/
     TextView time;
-    Button leftB, upB, rightB;
+    Button leftB, upB, rightB, stopB;
     Button[][] buttons = new Button[8][6];
     int[][] id = {
             {R.id.button00,R.id.button01,R.id.button02,R.id.button03,R.id.button04,R.id.button05},
@@ -63,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
         leftB = (Button)findViewById(R.id.left);
         leftB.setOnClickListener(leftListener);
         upB = (Button)findViewById(R.id.up);
+        stopB = (Button)findViewById(R.id.stop);
         upB.setOnClickListener(upListener);
         rightB = (Button)findViewById(R.id.right);
         rightB.setOnClickListener(rightListener);
+        stopB.setOnClickListener(stopListener);
 
         roadOne = new roadOne();
         roadTwo = new roadTwo();
@@ -92,34 +97,69 @@ public class MainActivity extends AppCompatActivity {
            switch (msg.getData().getInt("road")){
                case 1:
                    int location = msg.getData().getInt("location");
-                   int t1 = stat[1][location+1];
-                   stat[1][location+1] = stat[1][location];
-                   stat[1][location] = t1;
+                   if (location != 5 ){
+
+                       int t1 = stat[1][location+1];
+                       stat[1][location+1] = stat[1][location];
+                       stat[1][location] = t1;
+                   }else {
+                       int t1 = stat[1][0];
+                       stat[1][0] = stat[1][location];
+                       stat[1][location] = t1;
+                   }
                    setMap();
                    break;
                case 2:
                    location = msg.getData().getInt("location");
-                   int t2 = stat[2][location+1];
-                   stat[2][location+1] = stat[2][location];
-                   stat[2][location] = t2;
+                   if (location!=5){
+
+                       int t2 = stat[2][location+1];
+                       stat[2][location+1] = stat[2][location];
+                       stat[2][location] = t2;
+                   }else{
+                       int t1 = stat[2][0];
+                       stat[2][0] = stat[2][location];
+                       stat[2][location] = t1;
+                   }
                    setMap();
                    break;
                case 4:
                    location = msg.getData().getInt("location");
-                   int t4 = stat[4][location+1];
-                   stat[4][location+1] = stat[4][location];
-                   stat[4][location] = t4;
+                   if (location!=5){
+
+                       int t4 = stat[4][location+1];
+                       stat[4][location+1] = stat[4][location];
+                       stat[4][location] = t4;
+                   }else {
+                       int t1 = stat[4][0];
+                       stat[4][0] = stat[4][location];
+                       stat[4][location] = t1;
+                   }
                    setMap();
                    break;
                case 6:
                    location = msg.getData().getInt("location");
-                   int t6 = stat[6][location+1];
-                   stat[6][location+1] = stat[6][location];
-                   stat[6][location] = t6;
+                   if (location!=5){
+
+                       int t6 = stat[6][location+1];
+                       stat[6][location+1] = stat[6][location];
+                       stat[6][location] = t6;
+                   }else{
+                       int t1 = stat[6][0];
+                       stat[6][0] = stat[6][location];
+                       stat[6][location] = t1;
+                   }
                    setMap();
                    break;
            }
            super.handleMessage(msg);
+
+           for (int i = 0;i<8;i++){
+
+                   Log.i("map",stat[i][0]+" "+stat[i][1]+" "+stat[i][2]+" "+stat[i][3]+" "+stat[i][4]+" "+stat[i][5]);
+
+           }
+           Log.i("map","=========");
        }
     };
 
@@ -128,22 +168,26 @@ public class MainActivity extends AppCompatActivity {
     private void setMap(){
         if (cur_location_i == 1){
            if (cur_location_j == cur_on_road1){
+               gameStat = 2;
                stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
                collisionDialog(1);
            }
         }else if (cur_location_i == 2){
             if (cur_location_j == cur_on_road2){
-                stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
+                gameStat = 2;
+                stat[2][cur_on_road1] = 4;         /* collision , accident!!*/
                 collisionDialog(2);
             }
         }else if (cur_location_i == 4){
             if (cur_location_j == cur_on_road4){
-                stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
+                gameStat = 2;
+                stat[4][cur_on_road1] = 4;         /* collision , accident!!*/
                 collisionDialog(4);
             }
         }else if (cur_location_i == 6){
             if (cur_location_j == cur_on_road6){
-                stat[1][cur_on_road1] = 4;         /* collision , accident!!*/
+                gameStat = 2;
+                stat[6][cur_on_road1] = 4;         /* collision , accident!!*/
                 collisionDialog(6);
             }
         }
@@ -157,8 +201,6 @@ public class MainActivity extends AppCompatActivity {
                     buttons[i][j].setBackgroundColor(Color.BLACK);
                 }else if (stat[i][j] == 0){
                     buttons[i][j].setBackgroundColor(Color.GREEN);
-                }else if (stat[i][j] == 4){
-                    buttons[i][j].setBackgroundColor(Color.BLUE);
                 }
             }
         }
@@ -267,20 +309,23 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                for (int i = 0; i<30; i++){
-                    Thread.sleep(1000);                       /* 1s a move */
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("road",1);
-                    bundle.putInt("location", cur_on_road1);
-                    Message m = new Message();
-                    m.setData(bundle);
-                    mhandler.sendMessage(m);
-                    cur_on_road1++;
-                    if (cur_on_road1 == 5){
-                        cur_on_road1 = 0;
-                        int temp = stat[1][0];
-                        stat[1][0] = stat[1][5];
-                        stat[1][5] = temp;
+                while (gameStat!=2) {
+                    if (gameStat == 1){
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("road", 1);
+                        bundle.putInt("location", cur_on_road1);
+                        Message m = new Message();
+                        m.setData(bundle);
+                        mhandler.sendMessage(m);
+                        cur_on_road1++;
+                        if (cur_on_road1 == 6) {
+                            cur_on_road1 = 0;
+                        }
+                        Thread.sleep(500);                       /* 1s a move */
+                    }
+                    if (gameStat == 3){
+
                     }
                 }
             }catch (Exception e){
@@ -295,20 +340,23 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                for (int i = 0; i<30; i++){
-                    Thread.sleep(3000);                      /* 3s a move */
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("road",2);
-                    bundle.putInt("location",cur_on_road2);
-                    Message m = new Message();
-                    m.setData(bundle);
-                    mhandler.sendMessage(m);
-                    cur_on_road2++;
-                    if (cur_on_road2 == 5){
-                        cur_on_road2 = 0;
-                        int temp = stat[2][0];
-                        stat[2][0] = stat[2][5];
-                        stat[2][5] = temp;
+                while (gameStat != 2) {
+                    if (gameStat == 1){
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("road",2);
+                        bundle.putInt("location",cur_on_road2);
+                        Message m = new Message();
+                        m.setData(bundle);
+                        mhandler.sendMessage(m);
+                        cur_on_road2++;
+                        if (cur_on_road2 == 6){
+                            cur_on_road2 = 0;
+                        }
+                        Thread.sleep(800);                      /* 3s a move */
+                    }
+                    if (gameStat == 3){
+
                     }
                 }
             }catch (Exception e){
@@ -322,20 +370,23 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                for (int i = 0; i<30; i++){
-                    Thread.sleep(4000);                     /* 4s a move */
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("road",4);
-                    bundle.putInt("location",cur_on_road4);
-                    Message m = new Message();
-                    m.setData(bundle);
-                    mhandler.sendMessage(m);
-                    cur_on_road4++;
-                    if (cur_on_road4 == 5){
-                        cur_on_road4 = 0;
-                        int temp = stat[4][0];
-                        stat[4][0] = stat[4][5];
-                        stat[4][5] = temp;
+                while (gameStat != 2) {
+                    if (gameStat == 1){
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("road",4);
+                        bundle.putInt("location",cur_on_road4);
+                        Message m = new Message();
+                        m.setData(bundle);
+                        mhandler.sendMessage(m);
+                        cur_on_road4++;
+                        if (cur_on_road4 == 6){
+                            cur_on_road4 = 0;
+                        }
+                        Thread.sleep(700);                     /* 4s a move */
+                    }
+                    if (gameStat == 3){
+
                     }
                 }
             }catch (Exception e){
@@ -349,22 +400,26 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                for (int i = 0; i<30; i++){
-                    Thread.sleep(2000);                          /* 2s a move */
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("road",6);
-                    bundle.putInt("location",cur_on_road6);
-                    Message m = new Message();
-                    m.setData(bundle);
-                    mhandler.sendMessage(m);
-                    cur_on_road6++;
-                    if (cur_on_road6 == 5){
-                        cur_on_road6 = 0;
-                        int temp = stat[6][0];
-                        stat[6][0] = stat[6][5];
-                        stat[6][5] = temp;
+                while (gameStat != 2) {
+                    if (gameStat == 1){
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("road",6);
+                        bundle.putInt("location",cur_on_road6);
+                        Message m = new Message();
+                        m.setData(bundle);
+                        mhandler.sendMessage(m);
+                        cur_on_road6++;
+                        if (cur_on_road6 == 6){
+                            cur_on_road6 = 0;
+                        }
+                        Thread.sleep(1000);                          /* 2s a move */
+                    }
+                    if (gameStat == 3){
+
                     }
                 }
+
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -389,4 +444,17 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+    public View.OnClickListener stopListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(gameStat!=3)
+            {
+                gameStat = 3;
+            }
+            else{
+                gameStat = 1;
+            }
+        }
+    };
 }

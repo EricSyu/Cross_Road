@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -109,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 buttons[i][j] = (Button) findViewById(id[i][j]);
             }
         }
-
-        timer.start();
 
     }
 
@@ -277,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        timer.cancel();
     }
 
     public View.OnClickListener leftListener = new View.OnClickListener() {

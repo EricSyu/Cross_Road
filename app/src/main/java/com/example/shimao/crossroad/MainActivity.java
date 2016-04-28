@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PREF = "H_SCORE";
     public static final String PREF_HighScore = "High_Score";
-
     int cur_on_road1 = 0;
     int cur_on_road2 = 0;
     int cur_on_road4 = 0;
@@ -219,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 collisionDialog(6);
             }
         }
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 6; j++) {
                 if (stat[i][j] == 2) {
@@ -273,19 +273,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    CountDownTimer timer = new CountDownTimer(30000, 1000) {
-        @Override
-        public void onTick(long millisUntilFinished) {
-            time.setText(millisUntilFinished / 1000 + " s");
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-    };
 
     @Override
     protected void onPause() {
@@ -378,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 while (true) {
                     if (gameStat == 1) {
-
                         Bundle bundle = new Bundle();
                         bundle.putInt("road", 1);
                         bundle.putInt("location", cur_on_road1);
@@ -409,7 +395,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 while (true) {
                     if (gameStat == 1) {
-
                         Bundle bundle = new Bundle();
                         bundle.putInt("road", 2);
                         bundle.putInt("location", cur_on_road2);
@@ -439,7 +424,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 while (true) {
                     if (gameStat == 1) {
-
                         Bundle bundle = new Bundle();
                         bundle.putInt("road", 4);
                         bundle.putInt("location", cur_on_road4);
@@ -469,7 +453,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 while (true) {
                     if (gameStat == 1) {
-
                         Bundle bundle = new Bundle();
                         bundle.putInt("road", 6);
                         bundle.putInt("location", cur_on_road6);

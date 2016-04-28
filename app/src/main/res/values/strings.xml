@@ -7,4 +7,7 @@
 
     <string name="restart">重新開始</string>
     <string name="leave">離開</string>
+
+    <string name="success">成功！</string>
+    <string name="congratulation">感謝您對此遊戲的支持與鼓勵</string>
 </resources>

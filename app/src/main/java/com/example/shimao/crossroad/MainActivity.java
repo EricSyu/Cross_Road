@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     int cur_location_i = 7;
     int cur_location_j = 0;
     /* accident happen boolean */
-    int gameStat = 1;   /* 1-game playing 2-collision 3-pause 4-restart*/
+    int gameStat = 1;   /* 1-game playing 2-collision or restart 3-pause*/
     /* game score */
     int Score = 0;
     int HighScore;
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mhandler = new Handler() {
         public void handleMessage(Message msg) {
             setMap();
-            if(collisionStat) return;
+            if (collisionStat) return;
             switch (msg.getData().getInt("road")) {
                 case 1:
                     int location = msg.getData().getInt("location");
@@ -236,19 +236,25 @@ public class MainActivity extends AppCompatActivity {
                 collisionDialog(6);
             }
         }
-        for (int i = 0; i<8; i++){
-            for (int j = 0; j<6; j++){
-                if (stat[i][j] == 2){
-                    if(i==1) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car1));
-                    if(i==2) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car2));
-                    if(i==4) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car3));
-                    if(i==6) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car4));
-                }else if (stat[i][j] == 1){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (stat[i][j] == 2) {
+                    if (i == 1)
+                        buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car1));
+                    if (i == 2)
+                        buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car2));
+                    if (i == 4)
+                        buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car3));
+                    if (i == 6)
+                        buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car4));
+                } else if (stat[i][j] == 1) {
                     buttons[i][j].setBackground(getResources().getDrawable(R.drawable.road));
-                }else if (stat[i][j] == 3){
-                    if(i==0 || i==3 || i==5 || i==7) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_grass));
-                    if(i==1 || i==2 || i==4 || i==6) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_road));
-                }else if (stat[i][j] == 0){
+                } else if (stat[i][j] == 3) {
+                    if (i == 0 || i == 3 || i == 5 || i == 7)
+                        buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_grass));
+                    if (i == 1 || i == 2 || i == 4 || i == 6)
+                        buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_road));
+                } else if (stat[i][j] == 0) {
                     buttons[i][j].setBackground(getResources().getDrawable(R.drawable.grass));
                 }
             }
@@ -272,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.highscore) {
             new AlertDialog.Builder(MainActivity.this)
-                    .setMessage("最高分為: " +HighScore + " 分")
+                    .setMessage("最高分為: " + HighScore + " 分")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -317,9 +323,10 @@ public class MainActivity extends AppCompatActivity {
     public View.OnClickListener leftListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
 
-            if (cur_location_j != 0) {
+
+            if (cur_location_j != 0 && gameStat != 3) {
+                soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
                 int temp = stat[cur_location_i][cur_location_j - 1];
                 stat[cur_location_i][cur_location_j - 1] = stat[cur_location_i][cur_location_j];
                 stat[cur_location_i][cur_location_j] = temp;
@@ -332,9 +339,10 @@ public class MainActivity extends AppCompatActivity {
     public View.OnClickListener upListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
 
-            if (cur_location_i != 0) {
+
+            if (cur_location_i != 0 && gameStat != 3) {
+                soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
                 if (cur_location_i == 3 || cur_location_i == 5 || cur_location_i == 7) {
                     /* if move to the road */
                     stat[cur_location_i - 1][cur_location_j] = 3;
@@ -357,9 +365,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (gameStat != 2) {
                     Score += 5;
-                    tv_gameSocre.setText(Score+"");
+                    tv_gameSocre.setText(Score + "");
                 }
-                if(cur_location_i == 0){
+                if (cur_location_i == 0) {
                     recordHighScore();
                     gameStat = 2;
 
@@ -390,9 +398,10 @@ public class MainActivity extends AppCompatActivity {
     public View.OnClickListener rightListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
 
-            if (cur_location_j != 5) {
+
+            if (cur_location_j != 5 && gameStat != 3) {
+                soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
                 int temp = stat[cur_location_i][cur_location_j + 1];
                 stat[cur_location_i][cur_location_j + 1] = stat[cur_location_i][cur_location_j];
                 stat[cur_location_i][cur_location_j] = temp;
@@ -519,8 +528,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void collisionDialog(int road){
-        if(collisionStat) return;
+    public void collisionDialog(int road) {
+        if (collisionStat) return;
         collisionStat = true;
         soundPool.play(when_dead, 1, 1, 0, 0, 1);//play sound
         stopMusic();
@@ -548,13 +557,11 @@ public class MainActivity extends AppCompatActivity {
     public View.OnClickListener stopListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(gameStat!=3)
-            {
+            if (gameStat != 3) {
                 stopMusic();
                 gameStat = 3;
                 stopB.setText("RESUME");
-            }
-            else{
+            } else {
                 playMusic();
                 gameStat = 1;
                 stopB.setText("STOP");
@@ -563,40 +570,42 @@ public class MainActivity extends AppCompatActivity {
     };
 
     //----------------------   Music  ----------------------//
-    private void playMusic(){
-        if( mp == null || isStoped){
-            mp = create(MainActivity.this,  R.raw.crazyfrog);
+    private void playMusic() {
+        if (mp == null || isStoped) {
+            mp = create(MainActivity.this, R.raw.crazyfrog);
             isStoped = false;
         }
         mp.setLooping(true);
         mp.start();
     }
+
     private void stopMusic() {
-        if( mp == null || isStoped)
+        if (mp == null || isStoped)
             return;
         mp.stop();
         isStoped = true;
 
     }
+
     //Build environment for playing music
-    public static MediaPlayer create(Context context, int resid){
+    public static MediaPlayer create(Context context, int resid) {
         AssetFileDescriptor afd;
         afd = context.getResources().openRawResourceFd(resid);
-        if(afd == null)
+        if (afd == null)
             return null;
-        try{
+        try {
             MediaPlayer mp = new MediaPlayer();
             mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             afd.close();
             mp.prepare();
             return mp;
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("Play music error!", e.toString());
             return null;
         }
     }
 
-    public void recordHighScore(){
+    public void recordHighScore() {
         if (Score > HighScore) {
             HighScore = Score;
         }
@@ -606,7 +615,7 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    public void initValue(){
+    public void initValue() {
         playMusic();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 6; j++) {
@@ -614,7 +623,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         Score = 0;
-        tv_gameSocre.setText(Score+"");
+        tv_gameSocre.setText(Score + "");
         cur_on_road1 = 0;
         cur_on_road2 = 0;
         cur_on_road4 = 0;

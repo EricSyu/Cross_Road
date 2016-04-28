@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     private int when_win;
     private SoundPool soundPool;
 
+    private boolean collisionStat = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler mhandler = new Handler() {
         public void handleMessage(Message msg) {
+            setMap();
+            if(collisionStat) return;
             switch (msg.getData().getInt("road")) {
                 case 1:
                     int location = msg.getData().getInt("location");
@@ -154,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                         stat[1][0] = stat[1][location];
                         stat[1][location] = t1;
                     }
-                    setMap();
                     break;
                 case 2:
                     location = msg.getData().getInt("location");
@@ -168,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
                         stat[2][0] = stat[2][location];
                         stat[2][location] = t1;
                     }
-                    setMap();
                     break;
                 case 4:
                     location = msg.getData().getInt("location");
@@ -182,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                         stat[4][0] = stat[4][location];
                         stat[4][location] = t1;
                     }
-                    setMap();
                     break;
                 case 6:
                     location = msg.getData().getInt("location");
@@ -196,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
                         stat[6][0] = stat[6][location];
                         stat[6][location] = t1;
                     }
-                    setMap();
                     break;
             }
             super.handleMessage(msg);
@@ -367,6 +367,7 @@ public class MainActivity extends AppCompatActivity {
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("遊戲結束!")
                             .setMessage("抵達終點! \n共獲得了: " + Score + "分")
+                            .setCancelable(false)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -519,12 +520,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void collisionDialog(int road){
+        if(collisionStat) return;
+        collisionStat = true;
         soundPool.play(when_dead, 1, 1, 0, 0, 1);//play sound
         stopMusic();
         recordHighScore();
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle(R.string.collision)
                 .setMessage("發生車禍於第" + road + "路")
+                .setCancelable(false)
                 .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -676,6 +680,7 @@ public class MainActivity extends AppCompatActivity {
         cur_on_road6 = 0;
         cur_location_i = 7;
         cur_location_j = 0;
+        collisionStat = false;
         setMap();
         gameStat = 1;
         roadOne = new roadOne();

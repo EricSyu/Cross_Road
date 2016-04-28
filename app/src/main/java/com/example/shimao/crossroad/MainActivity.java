@@ -529,27 +529,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         gameStat = 4;
-                        for(int i = 0; i < 8; i++){
-                            for(int j = 0; j < 6; j++){
-                                stat[i][j] = initStat[i][j];
-                            }
-                        }
-                        cur_on_road1 = 0;
-                        cur_on_road2 = 0;
-                        cur_on_road4 = 0;
-                        cur_on_road6 = 0;
-                        cur_location_i = 7;
-                        cur_location_j = 0;
-                        setMap();
-                        gameStat = 1;
-                        roadOne = new roadOne();
-                        roadOne.start();
-                        roadTwo = new roadTwo();
-                        roadTwo.start();
-                        roadFour = new roadFour();
-                        roadFour.start();
-                        roadSix = new roadSix();
-                        roadSix.start();
                         playMusic();
                         initValue();
                     }

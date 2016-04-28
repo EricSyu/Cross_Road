@@ -381,7 +381,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
     }
 
     class roadTwo extends Thread {

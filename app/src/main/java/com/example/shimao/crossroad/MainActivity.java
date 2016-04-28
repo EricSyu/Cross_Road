@@ -1,8 +1,13 @@
 package com.example.shimao.crossroad;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -66,6 +71,19 @@ public class MainActivity extends AppCompatActivity {
 
     Thread roadOne,roadTwo,roadFour,roadSix;
 
+    //music
+    private MediaPlayer mp;
+    private boolean isStoped = true;
+    private boolean music_stop = true;
+
+    //Sound
+    private static final int SOUND_COUNT = 5;
+    private int when_jump;
+    private int when_dead;
+    private int ui_click;
+    private int when_win;
+    private SoundPool soundPool;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +99,13 @@ public class MainActivity extends AppCompatActivity {
         rightB = (Button)findViewById(R.id.right);
         rightB.setOnClickListener(rightListener);
         stopB.setOnClickListener(stopListener);
+
+        //Sound
+        soundPool = new SoundPool(SOUND_COUNT, AudioManager.STREAM_MUSIC, 0);
+        ui_click = soundPool.load(this, R.raw.ui_click, 1);
+        when_jump = soundPool.load(this, R.raw.flog, 1);
+        when_dead = soundPool.load(this, R.raw.dead, 1);
+        when_win = soundPool.load(this, R.raw.success, 1);
 
         roadOne = new roadOne();
         roadTwo = new roadTwo();
@@ -99,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         timer.start();
+        playMusic();
 
     }
 
@@ -255,14 +281,29 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
+    public void onResume() {
+        super.onResume();
+        playMusic();//Play music
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
+        stopMusic();//Stop music
         timer.cancel();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopMusic();//Stop music
+    }
+
 
     public View.OnClickListener leftListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
             if (cur_location_j!=0){
                 int temp = stat[cur_location_i][cur_location_j-1];
                 stat[cur_location_i][cur_location_j-1] = stat[cur_location_i][cur_location_j];
@@ -276,6 +317,7 @@ public class MainActivity extends AppCompatActivity {
     public View.OnClickListener upListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
             if (cur_location_i!=0){
                 if (cur_location_i == 3 || cur_location_i == 5 || cur_location_i == 7) {
                     /* if move to the road */
@@ -304,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
     public View.OnClickListener rightListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            soundPool.play(when_jump, 1, 1, 0, 0, 1);//play sound
             if (cur_location_j!=5){
                 int temp = stat[cur_location_i][cur_location_j+1];
                 stat[cur_location_i][cur_location_j+1] = stat[cur_location_i][cur_location_j];
@@ -449,6 +492,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void collisionDialog(int road){
+        soundPool.play(when_dead, 1, 1, 0, 0, 1);//play sound
+        stopMusic();
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle(R.string.collision)
                 .setMessage("發生車禍於第"+road+"路")
@@ -473,6 +518,7 @@ public class MainActivity extends AppCompatActivity {
                         roadFour.start();
                         roadSix = new roadSix();
                         roadSix.start();
+                        playMusic();
                     }
                 })
                 .setNegativeButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -496,4 +542,55 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    //----------------------   Music  ----------------------//
+    private void playMusic(){
+        if( mp == null || isStoped){
+            mp = create(MainActivity.this,  R.raw.crazyfrog);
+            isStoped = false;
+        }
+        mp.setLooping(true);
+        mp.start();
+    }
+    private void stopMusic(){
+        if( mp == null || isStoped)
+            return;
+        mp.stop();
+        isStoped = true;
+
+    }
+    //Build environment for playing music
+    public static MediaPlayer create(Context context, int resid){
+        AssetFileDescriptor afd;
+        afd = context.getResources().openRawResourceFd(resid);
+        if(afd == null)
+            return null;
+        try{
+            MediaPlayer mp = new MediaPlayer();
+            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            afd.close();
+            mp.prepare();
+            return mp;
+        }catch (Exception e){
+            Log.e("Play music error!", e.toString());
+            return null;
+        }
+    }
+/*
+    private Button.OnClickListener music_control = new Button.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+
+            if(!isStoped){
+                soundPool.play(ui_click, 1, 1, 0, 0, 1);//sound
+                stopMusic();
+                btn_music.setImageResource(R.drawable.music_off1);
+            }
+            else{
+                soundPool.play(ui_click, 1, 1, 0, 0, 1);//sound
+                playMusic();
+                btn_music.setImageResource(R.drawable.music_on1);
+            }
+        }
+    };*/
 }

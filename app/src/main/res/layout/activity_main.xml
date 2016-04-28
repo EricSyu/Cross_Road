@@ -23,6 +23,16 @@
 
     <include layout="@layout/content_main" />
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/tv_score"
+        android:layout_gravity="top|right"
+        android:layout_marginTop="65dp"
+        android:layout_marginRight="25dp"
+        android:textSize="40sp"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
 
 </android.support.design.widget.CoordinatorLayout>

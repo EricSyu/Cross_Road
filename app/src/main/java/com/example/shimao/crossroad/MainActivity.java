@@ -18,12 +18,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    int cur_on_road1,cur_on_road2,cur_on_road4,cur_on_road6 = 0;  /* current car location on road */
+    int cur_on_road1 = 0;
+    int cur_on_road2 = 0;
+    int cur_on_road4 = 0;
+    int cur_on_road6 = 0;  /* current car location on road */
     /* current man location */
     int cur_location_i = 7;
     int cur_location_j = 0;
     /* accident happen boolean */
-    int gameStat = 1;   /* 1-game playing 2-collision 3-pause 4-restart*/
+    int gameStat = 1;   /* 1-game playing 2-collision 3-pause 4-restart 5-success */
     TextView time;
     Button leftB, upB, rightB, stopB;
     Button[][] buttons = new Button[8][6];
@@ -185,21 +188,24 @@ public class MainActivity extends AppCompatActivity {
         }else if (cur_location_i == 2){
             if (cur_location_j == cur_on_road2){
                 gameStat = 2;
-                stat[2][cur_on_road1] = 4;         /* collision , accident!!*/
+                stat[2][cur_on_road2] = 4;         /* collision , accident!!*/
                 collisionDialog(2);
             }
         }else if (cur_location_i == 4){
             if (cur_location_j == cur_on_road4){
                 gameStat = 2;
-                stat[4][cur_on_road1] = 4;         /* collision , accident!!*/
+                stat[4][cur_on_road4] = 4;         /* collision , accident!!*/
                 collisionDialog(4);
             }
         }else if (cur_location_i == 6){
             if (cur_location_j == cur_on_road6){
                 gameStat = 2;
-                stat[6][cur_on_road1] = 4;         /* collision , accident!!*/
+                stat[6][cur_on_road6] = 4;         /* collision , accident!!*/
                 collisionDialog(6);
             }
+        }else if(cur_location_i == 0){
+            gameStat = 5;
+            successDialog();
         }
         for (int i = 0; i<8; i++){
             for (int j = 0; j<6; j++){
@@ -319,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                while (gameStat!=2) {
+                while (gameStat!=2 && gameStat!=5) {
                     if (gameStat == 1){
 
                         Bundle bundle = new Bundle();
@@ -353,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                while (gameStat != 2) {
+                while (gameStat != 2 && gameStat!=5) {
                     if (gameStat == 1){
 
                         Bundle bundle = new Bundle();
@@ -386,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                while (gameStat != 2) {
+                while (gameStat != 2 && gameStat!=5) {
                     if (gameStat == 1){
 
                         Bundle bundle = new Bundle();
@@ -419,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
             try {
-                while (gameStat != 2) {
+                while (gameStat != 2 && gameStat!=5) {
                     if (gameStat == 1){
 
                         Bundle bundle = new Bundle();
@@ -500,4 +506,44 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void successDialog(){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.success)
+                .setMessage(R.string.congratulation)
+                .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        gameStat = 4;
+                        for(int i = 0; i < 8; i++){
+                            for(int j = 0; j < 6; j++){
+                                stat[i][j] = initStat[i][j];
+                            }
+                        }
+                        cur_on_road1 = 0;
+                        cur_on_road2 = 0;
+                        cur_on_road4 = 0;
+                        cur_on_road6 = 0;
+                        cur_location_i = 7;
+                        cur_location_j = 0;
+                        setMap();
+                        gameStat = 1;
+                        roadOne = new roadOne();
+                        roadOne.start();
+                        roadTwo = new roadTwo();
+                        roadTwo.start();
+                        roadFour = new roadFour();
+                        roadFour.start();
+                        roadSix = new roadSix();
+                        roadSix.start();
+                    }
+                })
+                .setNegativeButton(R.string.leave, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
+    }
 }

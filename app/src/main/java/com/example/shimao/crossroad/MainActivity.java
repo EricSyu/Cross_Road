@@ -238,17 +238,20 @@ public class MainActivity extends AppCompatActivity {
                 collisionDialog(6);
             }
         }
-
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 6; j++) {
-                if (stat[i][j] == 2) {
-                    buttons[i][j].setBackgroundColor(Color.RED);
-                } else if (stat[i][j] == 1) {
-                    buttons[i][j].setBackgroundColor(Color.GRAY);
-                } else if (stat[i][j] == 3) {
-                    buttons[i][j].setBackgroundColor(Color.BLACK);
-                } else if (stat[i][j] == 0) {
-                    buttons[i][j].setBackgroundColor(Color.GREEN);
+        for (int i = 0; i<8; i++){
+            for (int j = 0; j<6; j++){
+                if (stat[i][j] == 2){
+                    if(i==1) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car1));
+                    if(i==2) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car2));
+                    if(i==4) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car3));
+                    if(i==6) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car4));
+                }else if (stat[i][j] == 1){
+                    buttons[i][j].setBackground(getResources().getDrawable(R.drawable.road));
+                }else if (stat[i][j] == 3){
+                    if(i==0 || i==3 || i==5 || i==7) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_grass));
+                    if(i==1 || i==2 || i==4 || i==6) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_road));
+                }else if (stat[i][j] == 0){
+                    buttons[i][j].setBackground(getResources().getDrawable(R.drawable.grass));
                 }
             }
         }
@@ -356,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (gameStat != 2) {
                     Score += 5;
-                    tv_gameSocre.setText("分數: " + Score);
+                    tv_gameSocre.setText(Score+"");
                 }
                 if(cur_location_i == 0){
                     recordHighScore();
@@ -567,10 +570,12 @@ public class MainActivity extends AppCompatActivity {
             {
                 stopMusic();
                 gameStat = 3;
+                stopB.setText("RESUME");
             }
             else{
                 playMusic();
                 gameStat = 1;
+                stopB.setText("STOP");
             }
         }
     };
@@ -685,7 +690,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         Score = 0;
-        tv_gameSocre.setText("分數: " + Score);
+        tv_gameSocre.setText(Score+"");
         cur_on_road1 = 0;
         cur_on_road2 = 0;
         cur_on_road4 = 0;

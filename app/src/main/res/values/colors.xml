@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#ff8e1d</color>
+    <color name="colorPrimaryDark">#da7a1a</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="frog_bg">#00ffffff</color>
 </resources>

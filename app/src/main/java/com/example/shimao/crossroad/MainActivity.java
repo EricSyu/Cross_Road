@@ -70,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         leftB = (Button)findViewById(R.id.left);
         leftB.setOnClickListener(leftListener);
@@ -204,13 +202,17 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i<8; i++){
             for (int j = 0; j<6; j++){
                 if (stat[i][j] == 2){
-                    buttons[i][j].setBackgroundColor(Color.RED);
+                    if(i==1) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car1));
+                    if(i==2) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car2));
+                    if(i==4) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car3));
+                    if(i==6) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.car4));
                 }else if (stat[i][j] == 1){
-                    buttons[i][j].setBackgroundColor(Color.GRAY);
+                    buttons[i][j].setBackground(getResources().getDrawable(R.drawable.road));
                 }else if (stat[i][j] == 3){
-                    buttons[i][j].setBackgroundColor(Color.BLACK);
+                    if(i==0 || i==3 || i==5 || i==7) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_grass));
+                    if(i==1 || i==2 || i==4 || i==6) buttons[i][j].setBackground(getResources().getDrawable(R.drawable.frog_on_road));
                 }else if (stat[i][j] == 0){
-                    buttons[i][j].setBackgroundColor(Color.GREEN);
+                    buttons[i][j].setBackground(getResources().getDrawable(R.drawable.grass));
                 }
             }
         }
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     CountDownTimer timer = new CountDownTimer(30000,1000) {
         @Override
         public void onTick(long millisUntilFinished) {
-            time.setText(millisUntilFinished+" s");
+            //time.setText(millisUntilFinished+" s");
         }
 
         @Override

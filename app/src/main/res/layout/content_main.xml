@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.shimao.crossroad.MainActivity"
-    tools:showIn="@layout/activity_main">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/time"
-        android:text="Hello World!" />
+    tools:showIn="@layout/activity_main"
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_below="@+id/time"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/map"
         android:background="#f96d6c65">
 
@@ -38,37 +29,43 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button00"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button01"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button02"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button03"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button04"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button05"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
         </LinearLayout>
 
@@ -173,37 +170,43 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button30"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button31"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button32"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button33"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button34"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button35"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
         </LinearLayout>
 
@@ -263,37 +266,43 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button50"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button51"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button52"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button53"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button54"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button55"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
         </LinearLayout>
 
@@ -352,38 +361,43 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button70"
-                android:background="#020202"
+                android:background="@drawable/grass"
                 android:layout_weight="1" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button71"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button72"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button73"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button74"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button75"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/grass" />
 
         </LinearLayout>
 
@@ -393,57 +407,41 @@
             android:layout_below="@+id/map"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/left"
+                android:text="left"
+                android:layout_weight="1"
+                android:background="#bdbdbd" />
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/left"
-                    android:text="left" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
+            <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/up"
+                android:text="up"
+                android:layout_weight="1"
+                android:background="#bdbdbd" />
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/up"
-                    android:text="up" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
+            <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/right"
+                android:text="right"
+                android:layout_weight="1"
+                android:background="#bdbdbd" />
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/right"
-                    android:text="right" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
+            <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/stop"
-                    android:text="stop" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:id="@+id/stop"
+                android:text="stop"
+                android:layout_weight="1"
+                android:background="#bdbdbd" />
 
 
         </LinearLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

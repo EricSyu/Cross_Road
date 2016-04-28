@@ -456,7 +456,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         gameStat = 4;
-                        stat = initStat.clone();
+                        for(int i = 0; i < 8; i++){
+                            for(int j = 0; j < 6; j++){
+                                stat[i][j] = initStat[i][j];
+                            }
+                        }
                         cur_on_road1 = 0;
                         cur_on_road2 = 0;
                         cur_on_road4 = 0;
